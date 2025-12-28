@@ -84,10 +84,10 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
             <h3 style={{margin:0}}>General</h3>
           </div>
 
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.5rem',marginTop:'.75rem'}}>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.5rem',marginTop:'.75rem'}} className="detail-panel">
             {GENERAL_FIELDS.map((k, idx)=> (
               <div key={k}>
-                <label style={{fontSize:'.8rem',color:'#6b7280'}}>{k}</label>
+                <label>{k}</label>
                 {/* Always render inputs in the same location; readOnly when not editing so layout doesn't shift */}
                 <input
                   ref={idx===0? firstInputRef : undefined}
@@ -110,10 +110,10 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
           </div>
 
           <h4 style={{marginTop:'1rem'}}>Attributes</h4>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'.5rem',marginTop:'.5rem'}}>
+          <div className="attributes-grid" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'.5rem',marginTop:'.5rem'}}>
             {ATTR_FIELDS.map(k=> (
               <div key={k}>
-                <label style={{fontSize:'.8rem',color:'#6b7280'}}>{k}</label>
+                <label>{k}</label>
                 {/* Use number inputs but allow empty string; show blank instead of 0 when empty */}
                 <input
                   type="number"

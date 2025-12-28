@@ -60,16 +60,18 @@ export default function Dashboard(){
           <h2>{SECTIONS.find(s=>s.id===current).title}</h2>
           <p>Welcome, <strong>{username}</strong></p>
 
-          <section style={{marginTop:'1rem',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <h3 style={{margin:0}}>Selected Character</h3>
-            <div style={{display:'flex',alignItems:'center',gap:'.5rem'}}>
-              {selected && (
-                <button className="secondary" title="Edit" onClick={()=>{
-                  // toggle edit mode for the selected character
-                  if(editingId === selected) setEditingId(null)
-                  else setEditingId(selected)
-                }}>✏️</button>
-              )}
+          <section style={{marginTop:'1rem'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <h3 style={{margin:0}}>Selected Character</h3>
+              <div style={{display:'flex',alignItems:'center',gap:'.5rem'}}>
+                {selected && (
+                  <button className="secondary" title="Edit" onClick={()=>{
+                    // toggle edit mode for the selected character
+                    if(editingId === selected) setEditingId(null)
+                    else setEditingId(selected)
+                  }}>✏️</button>
+                )}
+              </div>
             </div>
 
             {selected ? (

@@ -37,6 +37,10 @@ footer.copyright{position:fixed;left:1rem;bottom:1rem;color:var(--muted);font-si
 /* Labels above fields */
 .detail-panel label{display:block;margin-bottom:.25rem;font-size:.85rem;color:#6b7280}
 
+/* Ensure inputs occupy full width and keep box sizing consistent */
+.detail-panel input{display:block;width:100%;box-sizing:border-box}
+.attributes-grid input{width:100%}
+
 /* Read-only input style: keeps placement but looks like plain text */
 .readonly-field{
   border: none !important;
