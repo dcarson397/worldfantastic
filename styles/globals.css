@@ -1,0 +1,26 @@
+:root{--bg:#f6f8fa;--accent:#0b74de;--muted:#6b7280}
+html,body,#__next{height:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#111}
+main.center{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;box-sizing:border-box}
+header h1{margin:0 0 1rem 0;font-size:2.25rem}
+.actions{display:flex;gap:1rem;margin-top:1.25rem}
+button.primary{background:var(--accent);color:white;border:none;padding:.6rem 1rem;border-radius:6px;cursor:pointer}
+button.secondary{background:transparent;border:1px solid #d1d5db;padding:.5rem .9rem;border-radius:6px;cursor:pointer}
+footer.copyright{position:fixed;left:1rem;bottom:1rem;color:var(--muted);font-size:.85rem}
+.container{background:white;padding:2rem;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,.06);max-width:720px;width:100%;text-align:center}
+.form{display:flex;flex-direction:column;gap:.75rem;max-width:360px;margin:0 auto}
+.form input{padding:.5rem .75rem;border:1px solid #e5e7eb;border-radius:6px}
+.link{color:var(--accent);text-decoration:none}
+
+/* App layout */
+.app-center{min-height:100vh}
+.app-container{display:flex;min-height:100vh}
+.sidebar{width:220px;background:#fff;padding:1rem;border-right:1px solid #e6e6e6}
+.content{flex:1;padding:1.5rem}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:0 1rem}
+.meeple-btn{background:transparent;border:none;font-size:1.6rem;cursor:pointer}
+.dropdown{position:absolute;right:1rem;top:3.25rem;background:white;border:1px solid #e6e6e6;border-radius:6px;padding:.5rem;box-shadow:0 8px 24px rgba(15,23,42,.06)}
+.characters{display:flex;flex-direction:column;gap:.5rem}
+.character-item{padding:.5rem .75rem;border-radius:6px;border:1px solid #eef2f6;cursor:pointer}
+.character-item.selected{background:#eef6ff;border-color:#cfe6ff}
+.sidebar .create-btn{margin-top:1rem}
