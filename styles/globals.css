@@ -34,6 +34,18 @@ footer.copyright{position:fixed;left:1rem;bottom:1rem;color:var(--muted);font-si
 .detail-panel input[type=text], .detail-panel input[type=number]{padding:.45rem .6rem;border:1px solid #e5e7eb;border-radius:6px}
 .detail-panel .character-image{height:180;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:6px;background:#fafafa}
 
+/* Labels above fields */
+.detail-panel label{display:block;margin-bottom:.25rem;font-size:.85rem;color:#6b7280}
+
+/* Read-only input style: keeps placement but looks like plain text */
+.readonly-field{
+  border: none !important;
+  background: transparent !important;
+  padding: .45rem .6rem !important;
+  color: #111;
+}
+.readonly-field:focus{ outline: none; }
+
 /* Read-only input style: keeps placement but looks like plain text */
 .readonly-field{
   border: none !important;

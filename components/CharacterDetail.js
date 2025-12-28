@@ -24,7 +24,8 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
     ATTR_FIELDS.forEach(k => { a[k] = (character.attributes && character.attributes[k]) ?? '' })
     setAttrs(a)
     setImage(character.image || null)
-    if(startEditing) setEditMode(true)
+    // respect parent-driven edit state; if parent toggles startEditing, mirror it
+    if(typeof startEditing !== 'undefined') setEditMode(!!startEditing)
   },[character, startEditing])
 
   // focus and select first input when entering edit mode
@@ -79,11 +80,8 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
         {editMode && <div style={{color:'red',fontWeight:600,marginBottom:'.5rem'}}>Edit Mode</div>}
 
         <div style={{background:'#fff',padding:'1rem',borderRadius:8,border:'1px solid #e6e6e6'}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
             <h3 style={{margin:0}}>General</h3>
-            <div>
-              <button className="secondary" title="Edit" onClick={()=>setEditMode(v=>!v)}>✏️</button>
-            </div>
           </div>
 
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.5rem',marginTop:'.75rem'}}>
