@@ -35,5 +35,26 @@ export default function handler(req,res){
     return res.status(201).json({character:newChar})
   }
 
+  if(req.method === 'PUT'){
+    const { id, fields } = req.body || {}
+    if(!id || !fields) return res.status(400).json({error:'Missing id or fields'})
+    u.characters = u.characters || {}
+    u.characters[section] = u.characters[section] || []
+    const idx = u.characters[section].findIndex(x=>x.id === id)
+    if(idx === -1) return res.status(404).json({error:'Character not found'})
+
+    const char = u.characters[section][idx]
+    // apply updates
+    if(typeof fields.name === 'string') char.name = fields.name
+    if(typeof fields.race === 'string') char.race = fields.race
+    if(typeof fields.alignment === 'string') char.alignment = fields.alignment
+    if(typeof fields.guidingPrinciple === 'string') char.guidingPrinciple = fields.guidingPrinciple
+    if(fields.attributes && typeof fields.attributes === 'object') char.attributes = fields.attributes
+    if(typeof fields.image === 'string') char.image = fields.image
+
+    try{ writeUsers(users) }catch(e){ return res.status(500).json({error:'Failed to save'}) }
+    return res.status(200).json({character: char})
+  }
+
   res.status(405).json({error:'Method not allowed'})
 }

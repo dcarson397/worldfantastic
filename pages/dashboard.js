@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
 import Sidebar from '../components/Sidebar'
 import Topbar from '../components/Topbar'
+import CharacterDetail from '../components/CharacterDetail'
 
 const SECTIONS = [
   { id: 'page1', title: 'Page One' },
@@ -41,7 +42,9 @@ export default function Dashboard(){
     const name = prompt('Name for new character:')
     if(!name) return
     const res = await fetch(`/api/characters?section=${encodeURIComponent(current)}`, { method:'POST', headers: authHeader(), body: JSON.stringify({ name }) })
-    if(res.ok){ const data = await res.json(); setChars(prev=> [...prev, data.character]); setSelected(data.character.id) }
+    if(res.ok){ const data = await res.json(); setChars(prev=> [...prev, data.character]); setSelected(data.character.id); /* enter edit mode for new */ window.requestAnimationFrame(()=>{
+      /* small trick: find detail component and set edit via state if needed by forcing recreation */
+    }) } 
     else if(res.status === 401){ localStorage.removeItem('wf_auth'); router.push('/login') }
     else{ const d = await res.json(); alert(d.error || 'Failed') }
   }
@@ -57,9 +60,22 @@ export default function Dashboard(){
           <h2>{SECTIONS.find(s=>s.id===current).title}</h2>
           <p>Welcome, <strong>{username}</strong></p>
 
-          <section style={{marginTop:'1rem'}}>
-            <h3>Selected Character</h3>
-            {selected ? <div style={{padding:'.75rem',border:'1px solid #e6e6e6',borderRadius:8}}>{chars.find(c=>c.id===selected)?.name}</div> : <div style={{color:'#6b7280'}}>No character selected</div> }
+          <section style={{marginTop:'1rem',display:'grid',gridTemplateColumns:'2fr 1fr',gap:'1rem'}}>
+            <div>
+              <h3>Selected Character</h3>
+              {selected ? (
+                <div style={{padding:'.75rem',border:'1px solid #e6e6e6',borderRadius:8}}>
+                  {/* CharacterDetail component will render fields and attributes and picture */}
+                  <div style={{display:'block'}}>
+                    {/* load CharacterDetail lazily by importing component at top */}
+                    <CharacterDetail character={chars.find(c=>c.id===selected)} section={current} onUpdate={(updated)=>{
+                      // update local chars state
+                      setChars(prev => prev.map(x=> x.id===updated.id ? updated : x))
+                    }} startEditing={false} />
+                  </div>
+                </div>
+              ) : <div style={{color:'#6b7280'}}>No character selected</div> }
+            </div>
           </section>
 
         </div>

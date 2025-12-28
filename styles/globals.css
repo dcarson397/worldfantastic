@@ -24,3 +24,12 @@ footer.copyright{position:fixed;left:1rem;bottom:1rem;color:var(--muted);font-si
 .character-item{padding:.5rem .75rem;border-radius:6px;border:1px solid #eef2f6;cursor:pointer}
 .character-item.selected{background:#eef6ff;border-color:#cfe6ff}
 .sidebar .create-btn{margin-top:1rem}
+
+/* Character Detail */
+.detail-panel{display:flex;gap:1rem}
+.detail-panel .left{flex:1}
+.detail-panel .right{width:220}
+.detail-panel .edit-indicator{color:red;font-weight:700;margin-bottom:.5rem}
+.detail-panel input[type=number]{width:100%}
+.detail-panel input[type=text], .detail-panel input[type=number]{padding:.45rem .6rem;border:1px solid #e5e7eb;border-radius:6px}
+.detail-panel .character-image{height:180;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:6px;background:#fafafa}
