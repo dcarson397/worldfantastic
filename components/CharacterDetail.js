@@ -94,6 +94,16 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
                   value={general[k] ?? ''}
                   onChange={e=>setGeneral(s=>({...s,[k]:e.target.value}))}
                   readOnly={!editMode}
+                  tabIndex={editMode ? 0 : -1}
+                  className={editMode ? '' : 'readonly-field'}
+                  onKeyDown={e=>{
+                    if(!editMode) return
+                    if(e.key === 'Escape'){
+                      // cancel
+                      e.preventDefault();
+                      setEditMode(false)
+                    }
+                  }}
                 />
               </div>
             ))}
@@ -111,6 +121,9 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
                   value={attrs[k] ?? ''}
                   onChange={e=>setAttrs(a=>({...a,[k]:e.target.value}))}
                   readOnly={!editMode}
+                  tabIndex={editMode ? 0 : -1}
+                  className={editMode ? '' : 'readonly-field'}
+                  onKeyDown={e=>{ if(!editMode) return; if(e.key === 'Escape'){ e.preventDefault(); setEditMode(false) } }}
                 />
               </div>
             ))}
