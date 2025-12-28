@@ -3,7 +3,7 @@ import {useEffect, useState, useRef} from 'react'
 const GENERAL_FIELDS = [ 'Name', 'Race', 'Alignment', 'Guiding Principle' ]
 const ATTR_FIELDS = [ 'Physical Strength','Intelligence','Intuition','Willpower','Constitution','Dexterity','Attractiveness','Luck','Power' ]
 
-export default function CharacterDetail({ character, section, onUpdate, startEditing }){
+export default function CharacterDetail({ character, section, onUpdate, startEditing, hideImage=false, onEditModeChange }){
   const [editMode, setEditMode] = useState(!!startEditing)
   const [general, setGeneral] = useState({})
   const [attrs, setAttrs] = useState({})
@@ -35,6 +35,8 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
         try{ if(firstInputRef.current){ firstInputRef.current.focus(); firstInputRef.current.select(); } }catch(e){ }
       }, 0)
     }
+    // notify parent of edit mode change
+    if(typeof onEditModeChange === 'function') onEditModeChange(editMode)
   },[editMode])
 
   if(!character) return <div style={{padding:'.75rem',color:'#6b7280'}}>No character selected</div>
@@ -152,17 +154,19 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
 
       </div>
 
-      <div style={{width:220}}>
-        <div style={{background:'#fff',padding:'1rem',borderRadius:8,border:'1px solid #e6e6e6',textAlign:'center'}}>
-          <div style={{height:180,display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',borderRadius:6,background:'#fafafa'}}>
-            {image ? <img src={image} style={{maxWidth:'100%',maxHeight:'100%'}} alt="character"/> : <div style={{color:'#9aa0a6'}}>No image</div>}
-          </div>
-          <div style={{marginTop:'.75rem'}}>
-            <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={onFile} />
-            <button className="primary" onClick={()=>{ if(!editMode) return alert('Enable Edit Mode to upload'); fileRef.current.click() }}>Upload New Picture</button>
+      {!hideImage && (
+        <div style={{width:220}}>
+          <div style={{background:'#fff',padding:'1rem',borderRadius:8,border:'1px solid #e6e6e6',textAlign:'center'}}>
+            <div style={{height:180,display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',borderRadius:6,background:'#fafafa'}}>
+              {image ? <img src={image} style={{maxWidth:'100%',maxHeight:'100%'}} alt="character"/> : <div style={{color:'#9aa0a6'}}>No image</div>}
+            </div>
+            <div style={{marginTop:'.75rem'}}>
+              <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={onFile} />
+              <button className="primary" onClick={()=>{ if(!editMode) return alert('Enable Edit Mode to upload'); fileRef.current.click() }}>Upload New Picture</button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
