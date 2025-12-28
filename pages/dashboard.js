@@ -59,23 +59,25 @@ export default function Dashboard(){
           <h2>{SECTIONS.find(s=>s.id===current).title}</h2>
           <p>Welcome, <strong>{username}</strong></p>
 
-          <section style={{marginTop:'1rem',display:'grid',gridTemplateColumns:'2fr 1fr',gap:'1rem'}}>
-            <div>
-              <h3>Selected Character</h3>
-              {selected ? (
+          <section style={{marginTop:'1rem'}}>
+            <h3>Selected Character</h3>
+            {selected ? (
+              <div style={{display:'grid',gridTemplateColumns:'2fr 420px',gap:'1rem',marginTop:'.75rem'}}>
                 <div style={{padding:'.75rem',border:'1px solid #e6e6e6',borderRadius:8}}>
-                  {/* CharacterDetail component will render fields and attributes and picture */}
-                  <div style={{display:'block'}}>
-                    {/* load CharacterDetail lazily by importing component at top */}
-                    <CharacterDetail character={chars.find(c=>c.id===selected)} section={current} onUpdate={(updated)=>{
-                      // update local chars state and clear any editing marker
-                      setChars(prev => prev.map(x=> x.id===updated.id ? updated : x))
-                      setEditingId(null)
-                    }} startEditing={editingId === selected} />
-                  </div>
+                  {/* Left column: additional character summary or notes (kept minimal for now) */}
+                  <p style={{marginTop:0}}>Overview or notes about the selected character can appear here.</p>
+                  <p style={{color:'#6b7280'}}>Selected: <strong>{chars.find(c=>c.id===selected)?.name}</strong></p>
                 </div>
-              ) : <div style={{color:'#6b7280'}}>No character selected</div> }
-            </div>
+
+                <div style={{padding:'.75rem',border:'1px solid #e6e6e6',borderRadius:8}}>
+                  {/* Right column: fields panel with image to the right (CharacterDetail handles that) */}
+                  <CharacterDetail character={chars.find(c=>c.id===selected)} section={current} onUpdate={(updated)=>{
+                    setChars(prev => prev.map(x=> x.id===updated.id ? updated : x))
+                    setEditingId(null)
+                  }} startEditing={editingId === selected} />
+                </div>
+              </div>
+            ) : <div style={{color:'#6b7280',marginTop:'.75rem'}}>No character selected</div> }
           </section>
 
         </div>
