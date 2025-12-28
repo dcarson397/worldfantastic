@@ -14,6 +14,7 @@ export default function Dashboard(){
   const [current, setCurrent] = useState(SECTIONS[0].id)
   const [chars, setChars] = useState([])
   const [selected, setSelected] = useState(null)
+  const [editingId, setEditingId] = useState(null)
   const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(true)
   const router = useRouter()
@@ -42,9 +43,7 @@ export default function Dashboard(){
     const name = prompt('Name for new character:')
     if(!name) return
     const res = await fetch(`/api/characters?section=${encodeURIComponent(current)}`, { method:'POST', headers: authHeader(), body: JSON.stringify({ name }) })
-    if(res.ok){ const data = await res.json(); setChars(prev=> [...prev, data.character]); setSelected(data.character.id); /* enter edit mode for new */ window.requestAnimationFrame(()=>{
-      /* small trick: find detail component and set edit via state if needed by forcing recreation */
-    }) } 
+    if(res.ok){ const data = await res.json(); setChars(prev=> [...prev, data.character]); setSelected(data.character.id); setEditingId(data.character.id) } 
     else if(res.status === 401){ localStorage.removeItem('wf_auth'); router.push('/login') }
     else{ const d = await res.json(); alert(d.error || 'Failed') }
   }
@@ -69,9 +68,10 @@ export default function Dashboard(){
                   <div style={{display:'block'}}>
                     {/* load CharacterDetail lazily by importing component at top */}
                     <CharacterDetail character={chars.find(c=>c.id===selected)} section={current} onUpdate={(updated)=>{
-                      // update local chars state
+                      // update local chars state and clear any editing marker
                       setChars(prev => prev.map(x=> x.id===updated.id ? updated : x))
-                    }} startEditing={false} />
+                      setEditingId(null)
+                    }} startEditing={editingId === selected} />
                   </div>
                 </div>
               ) : <div style={{color:'#6b7280'}}>No character selected</div> }

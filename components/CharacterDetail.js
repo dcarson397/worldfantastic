@@ -10,6 +10,7 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
   const [image, setImage] = useState(null)
   const [saving, setSaving] = useState(false)
   const fileRef = useRef()
+  const firstInputRef = useRef()
 
   useEffect(()=>{
     if(!character){ setGeneral({}); setAttrs({}); setImage(null); return }
@@ -25,6 +26,16 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
     setImage(character.image || null)
     if(startEditing) setEditMode(true)
   },[character, startEditing])
+
+  // focus and select first input when entering edit mode
+  useEffect(()=>{
+    if(editMode){
+      // next tick to ensure DOM updated
+      setTimeout(()=>{
+        try{ if(firstInputRef.current){ firstInputRef.current.focus(); firstInputRef.current.select(); } }catch(e){ }
+      }, 0)
+    }
+  },[editMode])
 
   if(!character) return <div style={{padding:'.75rem',color:'#6b7280'}}>No character selected</div>
 
@@ -74,14 +85,16 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
           </div>
 
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.5rem',marginTop:'.75rem'}}>
-            {GENERAL_FIELDS.map(k=> (
+            {GENERAL_FIELDS.map((k, idx)=> (
               <div key={k}>
                 <label style={{fontSize:'.8rem',color:'#6b7280'}}>{k}</label>
-                {editMode ? (
-                  <input value={general[k]||''} onChange={e=>setGeneral(s=>({...s,[k]:e.target.value}))} />
-                ) : (
-                  <div style={{padding:'.5rem .6rem'}}>{general[k] || <span style={{color:'#9aa0a6'}}>—</span>}</div>
-                )}
+                {/* Always render inputs in the same location; readOnly when not editing so layout doesn't shift */}
+                <input
+                  ref={idx===0? firstInputRef : undefined}
+                  value={general[k] ?? ''}
+                  onChange={e=>setGeneral(s=>({...s,[k]:e.target.value}))}
+                  readOnly={!editMode}
+                />
               </div>
             ))}
           </div>
@@ -91,11 +104,14 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
             {ATTR_FIELDS.map(k=> (
               <div key={k}>
                 <label style={{fontSize:'.8rem',color:'#6b7280'}}>{k}</label>
-                {editMode ? (
-                  <input type="number" min="0" value={attrs[k]||0} onChange={e=>setAttrs(a=>({...a,[k]:e.target.value}))} />
-                ) : (
-                  <div style={{padding:'.5rem .6rem'}}>{attrs[k] || <span style={{color:'#9aa0a6'}}>—</span>}</div>
-                )}
+                {/* Use number inputs but allow empty string; show blank instead of 0 when empty */}
+                <input
+                  type="number"
+                  min="0"
+                  value={attrs[k] ?? ''}
+                  onChange={e=>setAttrs(a=>({...a,[k]:e.target.value}))}
+                  readOnly={!editMode}
+                />
               </div>
             ))}
           </div>
@@ -103,7 +119,20 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
           {editMode && (
             <div style={{marginTop:'.75rem',display:'flex',gap:'.5rem'}}>
               <button className="primary" onClick={save} disabled={saving}>{saving? 'Saving...' : 'Save'}</button>
-              <button className="secondary" onClick={()=>{ setEditMode(false); setGeneral({Name:character.name}); setAttrs(character.attributes||{}); setImage(character.image||null) }}>Cancel</button>
+              <button className="secondary" onClick={()=>{
+                // revert changes to the original character values
+                setEditMode(false)
+                setGeneral({
+                  Name: character.name || '',
+                  Race: character.race || '',
+                  Alignment: character.alignment || '',
+                  'Guiding Principle': character.guidingPrinciple || ''
+                })
+                const a = {}
+                ATTR_FIELDS.forEach(k => { a[k] = (character.attributes && character.attributes[k]) ?? '' })
+                setAttrs(a)
+                setImage(character.image || null)
+              }}>Cancel</button>
             </div>
           )}
         </div>
