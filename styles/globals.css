@@ -39,7 +39,15 @@ footer.copyright{position:fixed;left:1rem;bottom:1rem;color:var(--muted);font-si
 
 /* Ensure inputs occupy full width and keep box sizing consistent */
 .detail-panel input{display:block;width:100%;box-sizing:border-box}
-.attributes-grid input{width:100%}
+/* Attribute inputs: increased to double previous width (~1/3) while keeping their column positions */
+.attributes-grid > div{display:flex;flex-direction:column;align-items:flex-start}
+.attributes-grid input{width:32%;min-width:80px;box-sizing:border-box}
+
+@media (max-width:640px){
+  /* On narrow screens, reduce gaps and make inputs larger relative to available space (doubled mobile size) */
+  .attributes-grid{gap:.25rem}
+  .attributes-grid input{width:56%;min-width:48px}
+}
 
 /* Read-only input style: keeps placement but looks like plain text */
 .readonly-field{
