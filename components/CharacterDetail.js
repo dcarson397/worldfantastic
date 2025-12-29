@@ -130,53 +130,58 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
         {editMode && <div style={{color:'red',fontWeight:600,marginBottom:'.5rem'}}>Edit Mode</div>}
 
         <div style={{background:'#fff',padding:'1rem',borderRadius:8,border:'1px solid #e6e6e6'}}>
-          <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
-            <h3 style={{margin:0}}>General</h3>
-          </div>
-
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.5rem',marginTop:'.75rem'}} className="detail-panel">
-            {GENERAL_FIELDS.map((k, idx)=> (
-              <div key={k}>
-                <label>{k}</label>
-                {/* Always render inputs in the same location; readOnly when not editing so layout doesn't shift */}
-                <input
-                  ref={idx===0? firstInputRef : undefined}
-                  value={general[k] ?? ''}
-                  onChange={e=>setGeneral(s=>({...s,[k]:e.target.value}))}
-                  readOnly={!editMode}
-                  tabIndex={editMode ? 0 : -1}
-                  className={editMode ? '' : 'readonly-field'}
-                  onKeyDown={e=>{
-                    if(!editMode) return
-                    if(e.key === 'Escape'){
-                      // cancel
-                      e.preventDefault();
-                      setEditMode(false)
-                    }
-                  }}
-                />
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.75rem',marginTop:'.25rem'}}>
+            <div>
+              <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
+                <h3 style={{margin:0}}>General</h3>
               </div>
-            ))}
-          </div>
 
-          <h4 style={{marginTop:'1rem'}}>Attributes</h4>
-          <div className="attributes-grid" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'.5rem',marginTop:'.5rem'}}>
-            {ATTR_FIELDS.map(k=> (
-              <div key={k}>
-                <label>{k}</label>
-                {/* Use number inputs but allow empty string; show blank instead of 0 when empty */}
-                <input
-                  type="number"
-                  min="0"
-                  value={attrs[k] ?? ''}
-                  onChange={e=>setAttrs(a=>({...a,[k]:e.target.value}))}
-                  readOnly={!editMode}
-                  tabIndex={editMode ? 0 : -1}
-                  className={editMode ? '' : 'readonly-field'}
-                  onKeyDown={e=>{ if(!editMode) return; if(e.key === 'Escape'){ e.preventDefault(); setEditMode(false) } }}
-                />
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.5rem',marginTop:'.5rem'}} className="detail-panel">
+                {GENERAL_FIELDS.map((k, idx)=> (
+                  <div key={k}>
+                    <label>{k}</label>
+                    {/* Always render inputs in the same location; readOnly when not editing so layout doesn't shift */}
+                    <input
+                      ref={idx===0? firstInputRef : undefined}
+                      value={general[k] ?? ''}
+                      onChange={e=>setGeneral(s=>({...s,[k]:e.target.value}))}
+                      readOnly={!editMode}
+                      tabIndex={editMode ? 0 : -1}
+                      className={editMode ? '' : 'readonly-field'}
+                      onKeyDown={e=>{
+                        if(!editMode) return
+                        if(e.key === 'Escape'){
+                          // cancel
+                          e.preventDefault();
+                          setEditMode(false)
+                        }
+                      }}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <h4 style={{marginTop:'1rem'}}>Attributes</h4>
+              <div className="attributes-grid" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'.5rem',marginTop:'.5rem'}}>
+                {ATTR_FIELDS.map(k=> (
+                  <div key={k}>
+                    <label>{k}</label>
+                    {/* Use number inputs but allow empty string; show blank instead of 0 when empty */}
+                    <input
+                      type="number"
+                      min="0"
+                      value={attrs[k] ?? ''}
+                      onChange={e=>setAttrs(a=>({...a,[k]:e.target.value}))}
+                      readOnly={!editMode}
+                      tabIndex={editMode ? 0 : -1}
+                      className={editMode ? '' : 'readonly-field'}
+                      onKeyDown={e=>{ if(!editMode) return; if(e.key === 'Escape'){ e.preventDefault(); setEditMode(false) } }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div />
           </div>
 
 {/* Personal Characteristics / Specials and Melee / Missile as explicit 2x2 grid */}
