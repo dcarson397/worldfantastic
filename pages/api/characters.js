@@ -29,7 +29,7 @@ export default function handler(req,res){
     u.characters = u.characters || {}
     u.characters[section] = u.characters[section] || []
     const id = Date.now().toString(36) + Math.random().toString(36).slice(2,6)
-    const newChar = { id, name }
+    const newChar = { id, name, race: '', alignment: '', guidingPrinciple: '', attributes: {}, personalCharacteristics: {}, specials: [], meleeSkills: [], missileSkills: [], image: null }
     u.characters[section].push(newChar)
     try{ writeUsers(users) }catch(e){ return res.status(500).json({error:'Failed to save'}) }
     return res.status(201).json({character:newChar})
@@ -51,6 +51,12 @@ export default function handler(req,res){
     if(typeof fields.guidingPrinciple === 'string') char.guidingPrinciple = fields.guidingPrinciple
     if(fields.attributes && typeof fields.attributes === 'object') char.attributes = fields.attributes
     if(typeof fields.image === 'string') char.image = fields.image
+
+    // New sections
+    if(fields.personalCharacteristics && typeof fields.personalCharacteristics === 'object') char.personalCharacteristics = fields.personalCharacteristics
+    if(Array.isArray(fields.specials)) char.specials = fields.specials
+    if(Array.isArray(fields.meleeSkills)) char.meleeSkills = fields.meleeSkills
+    if(Array.isArray(fields.missileSkills)) char.missileSkills = fields.missileSkills
 
     try{ writeUsers(users) }catch(e){ return res.status(500).json({error:'Failed to save'}) }
     return res.status(200).json({character: char})

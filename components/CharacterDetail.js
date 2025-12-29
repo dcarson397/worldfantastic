@@ -179,86 +179,87 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
             ))}
           </div>
 
-          {/* Personal Characteristics / Specials and Melee / Missile in two columns */}
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.75rem',marginTop:'.75rem'}}>
-            <div>
-              <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6}}>
-                <h4 style={{marginTop:0}}>Personal Characteristics</h4>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.5rem'}}>
-                  {PERSONAL_FIELDS.map((k,idx)=> (
-                    <div key={k}>
-                      <label style={{display:'block',marginBottom:'.25rem'}}>{k}</label>
-                      <input value={personal[k] ?? ''} onChange={e=>setPersonal(p=>({...p,[k]:e.target.value}))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} />
-                    </div>
-                  ))}
-                </div>
-              </div>
+{/* Personal Characteristics / Specials and Melee / Missile as explicit 2x2 grid */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gridTemplateRows:'auto auto',gap:'.75rem',marginTop:'.75rem'}}>
 
-              <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6,marginTop:'.5rem'}}>
-                <h4 style={{marginTop:0}}>Melee Skills</h4>
-                <div style={{marginTop:'.5rem'}}>
-                  <table style={{width:'100%',borderCollapse:'collapse'}}>
-                    <thead>
-                      <tr style={{textAlign:'left'}}><th>Melee Skill</th><th>Skills</th><th>Base %</th><th></th></tr>
-                    </thead>
-                    <tbody>
-                      {melee.map(row=> (
-                        <tr key={row.id}>
-                          <td><input value={row.skill} onChange={e=>setMelee(m=>m.map(x=> x.id===row.id? {...x,skill:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
-                          <td><input value={row.skills} onChange={e=>setMelee(m=>m.map(x=> x.id===row.id? {...x,skills:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
-                          <td><input value={row.base} onChange={e=>setMelee(m=>m.map(x=> x.id===row.id? {...x,base:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
-                          <td>{editMode && <button className="secondary" onClick={()=>removeMelee(row.id)}>Remove</button>}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {editMode && <div style={{marginTop:'.5rem'}}><button className="secondary" onClick={addMelee}>Add Melee Skill</button></div>}
-                </div>
+            {/* Top-left: Personal Characteristics */}
+            <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6, minHeight:160}}>
+              <h4 style={{marginTop:0}}>Personal Characteristics</h4>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'.5rem'}}>
+                {PERSONAL_FIELDS.map((k,idx)=> (
+                  <div key={k}>
+                    <label style={{display:'block',marginBottom:'.25rem'}}>{k}</label>
+                    <input value={personal[k] ?? ''} onChange={e=>setPersonal(p=>({...p,[k]:e.target.value}))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} />
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div>
-              <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6}}>
-                <h4 style={{marginTop:0}}>Character Specials</h4>
-                <div style={{marginTop:'.5rem'}}>
-                  <table style={{width:'100%',borderCollapse:'collapse'}}>
-                    <thead>
-                      <tr style={{textAlign:'left'}}><th>Special Name/Description</th><th>Power</th><th></th></tr>
-                    </thead>
-                    <tbody>
-                      {specials.map(s=> (
-                        <tr key={s.id}>
-                          <td><input value={s.name} onChange={e=>setSpecials(ss=>ss.map(x=> x.id===s.id ? {...x,name:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
-                          <td><input value={s.power} onChange={e=>setSpecials(ss=>ss.map(x=> x.id===s.id ? {...x,power:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
-                          <td>{editMode && <button className="secondary" onClick={()=>removeSpecial(s.id)}>Remove</button>}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {editMode && <div style={{marginTop:'.5rem'}}><button className="secondary" onClick={addSpecial}>Add Special</button></div>}
-                </div>
+            {/* Top-right: Character Specials */}
+            <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6, minHeight:160}}>
+              <h4 style={{marginTop:0}}>Character Specials</h4>
+              <div style={{marginTop:'.5rem'}}>
+                <table style={{width:'100%',borderCollapse:'collapse'}}>
+                  <thead>
+                    <tr style={{textAlign:'left'}}><th>Special Name/Description</th><th>Power</th><th></th></tr>
+                  </thead>
+                  <tbody>
+                    {specials.map(s=> (
+                      <tr key={s.id}>
+                        <td><input value={s.name} onChange={e=>setSpecials(ss=>ss.map(x=> x.id===s.id ? {...x,name:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
+                        <td><input value={s.power} onChange={e=>setSpecials(ss=>ss.map(x=> x.id===s.id ? {...x,power:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
+                        <td>{editMode && <button className="secondary" onClick={()=>removeSpecial(s.id)}>Remove</button>}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {editMode && <div style={{marginTop:'.5rem'}}><button className="secondary" onClick={addSpecial}>Add Special</button></div>}
               </div>
+            </div>
 
-              <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6,marginTop:'.5rem'}}>
-                <h4 style={{marginTop:0}}>Missile Skills</h4>
-                <div style={{marginTop:'.5rem'}}>
-                  <table style={{width:'100%',borderCollapse:'collapse'}}>
-                    <thead>
-                      <tr style={{textAlign:'left'}}><th>Missile Skill</th><th>Skills</th><th>Base %</th><th></th></tr>
-                    </thead>
-                    <tbody>
-                      {missile.map(row=> (
-                        <tr key={row.id}>
-                          <td><input value={row.skill} onChange={e=>setMissile(m=>m.map(x=> x.id===row.id? {...x,skill:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
-                          <td><input value={row.skills} onChange={e=>setMissile(m=>m.map(x=> x.id===row.id? {...x,skills:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
-                          <td><input value={row.base} onChange={e=>setMissile(m=>m.map(x=> x.id===row.id? {...x,base:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
-                          <td>{editMode && <button className="secondary" onClick={()=>removeMissile(row.id)}>Remove</button>}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {editMode && <div style={{marginTop:'.5rem'}}><button className="secondary" onClick={addMissile}>Add Missile Skill</button></div>}
-                </div>
+            {/* Bottom-left: Melee Skills */}
+            <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6}}>
+              <h4 style={{marginTop:0}}>Melee Skills</h4>
+              <div style={{marginTop:'.5rem'}}>
+                <table style={{width:'100%',borderCollapse:'collapse'}}>
+                  <thead>
+                    <tr style={{textAlign:'left'}}><th>Melee Skill</th><th>Skills</th><th>Base %</th><th></th></tr>
+                  </thead>
+                  <tbody>
+                    {melee.map(row=> (
+                      <tr key={row.id}>
+                        <td><input value={row.skill} onChange={e=>setMelee(m=>m.map(x=> x.id===row.id? {...x,skill:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
+                        <td><input value={row.skills} onChange={e=>setMelee(m=>m.map(x=> x.id===row.id? {...x,skills:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
+                        <td><input value={row.base} onChange={e=>setMelee(m=>m.map(x=> x.id===row.id? {...x,base:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
+                        <td>{editMode && <button className="secondary" onClick={()=>removeMelee(row.id)}>Remove</button>}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {editMode && <div style={{marginTop:'.5rem'}}><button className="secondary" onClick={addMelee}>Add Melee Skill</button></div>}
+              </div>
+            </div>
+
+            {/* Bottom-right: Missile Skills */}
+            <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6}}>
+              <h4 style={{marginTop:0}}>Missile Skills</h4>
+              <div style={{marginTop:'.5rem'}}>
+                <table style={{width:'100%',borderCollapse:'collapse'}}>
+                  <thead>
+                    <tr style={{textAlign:'left'}}><th>Missile Skill</th><th>Skills</th><th>Base %</th><th></th></tr>
+                  </thead>
+                  <tbody>
+                    {missile.map(row=> (
+                      <tr key={row.id}>
+                        <td><input value={row.skill} onChange={e=>setMissile(m=>m.map(x=> x.id===row.id? {...x,skill:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
+                        <td><input value={row.skills} onChange={e=>setMissile(m=>m.map(x=> x.id===row.id? {...x,skills:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
+                        <td><input value={row.base} onChange={e=>setMissile(m=>m.map(x=> x.id===row.id? {...x,base:e.target.value} : x ))} readOnly={!editMode} tabIndex={editMode?0:-1} className={editMode?'' : 'readonly-field'} /></td>
+                        <td>{editMode && <button className="secondary" onClick={()=>removeMissile(row.id)}>Remove</button>}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {editMode && <div style={{marginTop:'.5rem'}}><button className="secondary" onClick={addMissile}>Add Missile Skill</button></div>}
               </div>
             </div>
           </div>
