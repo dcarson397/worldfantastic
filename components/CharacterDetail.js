@@ -181,7 +181,16 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
                 ))}
               </div>
             </div>
-            <div />
+            <div style={{padding:'.75rem',border:'1px solid #eef2f6',borderRadius:6, minHeight:160, textAlign:'center'}}>
+              <h4 style={{marginTop:0}}>Picture</h4>
+              <div style={{height:120,display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',borderRadius:6,background:'#fafafa',border:'1px solid #e6e6e6'}}>
+                {image ? <img src={image} style={{maxWidth:'100%',maxHeight:'100%'}} alt="character"/> : <div style={{color:'#9aa0a6'}}>No image</div>}
+              </div>
+              <div style={{marginTop:'.5rem'}}>
+                <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={onFile} />
+                <button className="primary" onClick={()=>{ if(!editMode) return alert('Enable Edit Mode to upload'); fileRef.current.click() }}>Upload New Picture</button>
+              </div>
+            </div>
           </div>
 
 {/* Personal Characteristics / Specials and Melee / Missile as explicit 2x2 grid */}
@@ -299,19 +308,7 @@ export default function CharacterDetail({ character, section, onUpdate, startEdi
 
       </div>
 
-      {!hideImage && (
-        <div style={{width:220}}>
-          <div style={{background:'#fff',padding:'1rem',borderRadius:8,border:'1px solid #e6e6e6',textAlign:'center'}}>
-            <div style={{height:180,display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',borderRadius:6,background:'#fafafa'}}>
-              {image ? <img src={image} style={{maxWidth:'100%',maxHeight:'100%'}} alt="character"/> : <div style={{color:'#9aa0a6'}}>No image</div>}
-            </div>
-            <div style={{marginTop:'.75rem'}}>
-              <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={onFile} />
-              <button className="primary" onClick={()=>{ if(!editMode) return alert('Enable Edit Mode to upload'); fileRef.current.click() }}>Upload New Picture</button>
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   )
 }
