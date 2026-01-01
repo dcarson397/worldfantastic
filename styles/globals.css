@@ -2,10 +2,14 @@
 html,body,#__next{height:100%}
 body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#111}
 main.center{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;box-sizing:border-box}
+main.home-screen{min-height:100vh;display:flex;flex-direction:column;margin:0;padding:0;overflow-y:auto}
+.home-image-container{position:relative;width:calc(100vw - 16px);margin:0 8px}
+.home-image{width:100%;height:auto;display:block}
+.home-actions{position:absolute;top:66.67%;left:50%;transform:translate(-50%, -50%);display:flex;gap:1.6rem;z-index:10}
 header h1{margin:0 0 1rem 0;font-size:2.25rem}
 .actions{display:flex;gap:1rem;margin-top:1.25rem}
-button.primary{background:var(--accent);color:white;border:none;padding:.6rem 1rem;border-radius:6px;cursor:pointer}
-button.secondary{background:transparent;border:1px solid #d1d5db;padding:.5rem .9rem;border-radius:6px;cursor:pointer}
+button.primary{background:#180c83;color:white;border:none;padding:.96rem 1.6rem;border-radius:6px;cursor:pointer;font-size:1.28rem;opacity:0.7}
+button.secondary{background:#fffded;color:#180c83;border:1px solid #d1d5db;padding:.8rem 1.44rem;border-radius:6px;cursor:pointer;font-size:1.28rem;opacity:0.7}
 footer.copyright{position:fixed;left:1rem;bottom:1rem;color:var(--muted);font-size:.85rem}
 .container{background:white;padding:2rem;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,.06);max-width:720px;width:100%;text-align:center}
 .form{display:flex;flex-direction:column;gap:.75rem;max-width:360px;margin:0 auto}
